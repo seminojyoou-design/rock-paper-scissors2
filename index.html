@@ -1,0 +1,150 @@
+-repo: janken-app-
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Paper Scissors</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0d0d0d;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    padding: 24px;
+  }
+  h1 { font-size: 20px; letter-spacing: 6px; text-transform: uppercase; color: #aaa; }
+  .score-board {
+    display: flex;
+    gap: 40px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: #555;
+  }
+  .score-board span { color: #fff; font-size: 28px; display: block; text-align: center; margin-top: 4px; }
+  .hands {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    font-size: 72px;
+    min-height: 100px;
+  }
+  .vs { font-size: 14px; color: #333; letter-spacing: 3px; }
+  .result {
+    font-size: 15px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    min-height: 24px;
+    color: #ff0;
+  }
+  .result.win { color: #0f0; }
+  .result.lose { color: #f44; }
+  .result.draw { color: #ff0; }
+  .buttons {
+    display: flex;
+    gap: 16px;
+  }
+  button {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    color: #fff;
+    font-size: 36px;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: border-color 0.15s, transform 0.1s;
+  }
+  button:hover { border-color: #ff0; transform: scale(1.1); }
+  button:active { transform: scale(0.95); }
+  .reset {
+    font-size: 11px;
+    width: auto;
+    height: auto;
+    padding: 8px 20px;
+    letter-spacing: 2px;
+    color: #555;
+    border-color: #222;
+  }
+  .reset:hover { color: #fff; border-color: #555; transform: none; }
+</style>
+</head>
+<body>
+<h1>Rock Paper Scissors</h1>
+
+<div class="score-board">
+  <div>YOU<span id="s-you">0</span></div>
+  <div>CPU<span id="s-cpu">0</span></div>
+</div>
+
+<div class="hands">
+  <span id="h-you">🤜</span>
+  <span class="vs">VS</span>
+  <span id="h-cpu">🤛</span>
+</div>
+
+<div class="result" id="result">Choose!</div>
+
+<div class="buttons">
+  <button onclick="play('rock')" title="Rock">✊</button>
+  <button onclick="play('scissors')" title="Scissors">✌️</button>
+  <button onclick="play('paper')" title="Paper">🖐️</button>
+</div>
+
+<button class="reset" onclick="reset()">RESET</button>
+
+<script>
+  const choices = ['rock','scissors','paper'];
+  const emoji = { rock:'✊', scissors:'✌️', paper:'🖐️' };
+  let sYou = 0, sCpu = 0;
+
+  function play(you) {
+    const cpu = choices[Math.floor(Math.random() * 3)];
+    document.getElementById('h-you').textContent = emoji[you];
+    document.getElementById('h-cpu').textContent = emoji[cpu];
+
+    const res = document.getElementById('result');
+    res.className = 'result';
+
+    if(you === cpu) {
+      res.textContent = 'DRAW';
+      res.classList.add('draw');
+    } else if(
+      (you==='rock' && cpu==='scissors') ||
+      (you==='scissors' && cpu==='paper') ||
+      (you==='paper' && cpu==='rock')
+    ) {
+      res.textContent = 'YOU WIN!';
+      res.classList.add('win');
+      sYou++;
+    } else {
+      res.textContent = 'YOU LOSE';
+      res.classList.add('lose');
+      sCpu++;
+    }
+    document.getElementById('s-you').textContent = sYou;
+    document.getElementById('s-cpu').textContent = sCpu;
+  }
+
+  function reset() {
+    sYou = sCpu = 0;
+    document.getElementById('s-you').textContent = 0;
+    document.getElementById('s-cpu').textContent = 0;
+    document.getElementById('h-you').textContent = '🤜';
+    document.getElementById('h-cpu').textContent = '🤛';
+    const res = document.getElementById('result');
+    res.className = 'result';
+    res.textContent = 'Choose!';
+  }
+</script>
+
+</body>
+</html>
